@@ -1,0 +1,373 @@
+{
+  "type" : "record",
+  "name" : "flights",
+  "doc" : "Sqoop import of flights",
+  "fields" : [ {
+    "name" : "flightdate",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "flightdate",
+    "sqlType" : "91"
+  }, {
+    "name" : "airline",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "airline",
+    "sqlType" : "12"
+  }, {
+    "name" : "origin",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "origin",
+    "sqlType" : "12"
+  }, {
+    "name" : "dest",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "dest",
+    "sqlType" : "12"
+  }, {
+    "name" : "cancelled",
+    "type" : [ "null", "boolean" ],
+    "default" : null,
+    "columnName" : "cancelled",
+    "sqlType" : "-7"
+  }, {
+    "name" : "diverted",
+    "type" : [ "null", "boolean" ],
+    "default" : null,
+    "columnName" : "diverted",
+    "sqlType" : "-7"
+  }, {
+    "name" : "crsdeptime",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "crsdeptime",
+    "sqlType" : "92"
+  }, {
+    "name" : "deptime",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "deptime",
+    "sqlType" : "92"
+  }, {
+    "name" : "depdelayminutes",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "depdelayminutes",
+    "sqlType" : "4"
+  }, {
+    "name" : "depdelay",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "depdelay",
+    "sqlType" : "4"
+  }, {
+    "name" : "arrtime",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "arrtime",
+    "sqlType" : "92"
+  }, {
+    "name" : "arrdelayminutes",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "arrdelayminutes",
+    "sqlType" : "4"
+  }, {
+    "name" : "airtime",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "airtime",
+    "sqlType" : "4"
+  }, {
+    "name" : "crselapsedtime",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "crselapsedtime",
+    "sqlType" : "4"
+  }, {
+    "name" : "actualelapsedtime",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "actualelapsedtime",
+    "sqlType" : "4"
+  }, {
+    "name" : "distance",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "distance",
+    "sqlType" : "4"
+  }, {
+    "name" : "year",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "year",
+    "sqlType" : "4"
+  }, {
+    "name" : "quarter",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "quarter",
+    "sqlType" : "4"
+  }, {
+    "name" : "month",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "month",
+    "sqlType" : "4"
+  }, {
+    "name" : "dayofmonth",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "dayofmonth",
+    "sqlType" : "4"
+  }, {
+    "name" : "dayofweek",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "dayofweek",
+    "sqlType" : "4"
+  }, {
+    "name" : "marketing_airline_network",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "marketing_airline_network",
+    "sqlType" : "12"
+  }, {
+    "name" : "operated_or_branded_code_share_partners",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "operated_or_branded_code_share_partners",
+    "sqlType" : "12"
+  }, {
+    "name" : "dot_id_marketing_airline",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "dot_id_marketing_airline",
+    "sqlType" : "4"
+  }, {
+    "name" : "iata_code_marketing_airline",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "iata_code_marketing_airline",
+    "sqlType" : "12"
+  }, {
+    "name" : "flight_number_marketing_airline",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "flight_number_marketing_airline",
+    "sqlType" : "12"
+  }, {
+    "name" : "operating_airline",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "operating_airline",
+    "sqlType" : "12"
+  }, {
+    "name" : "dot_id_operating_airline",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "dot_id_operating_airline",
+    "sqlType" : "4"
+  }, {
+    "name" : "iata_code_operating_airline",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "iata_code_operating_airline",
+    "sqlType" : "12"
+  }, {
+    "name" : "tail_number",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "tail_number",
+    "sqlType" : "12"
+  }, {
+    "name" : "flight_number_operating_airline",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "flight_number_operating_airline",
+    "sqlType" : "12"
+  }, {
+    "name" : "originairportid",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "originairportid",
+    "sqlType" : "4"
+  }, {
+    "name" : "originairportseqid",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "originairportseqid",
+    "sqlType" : "4"
+  }, {
+    "name" : "origincitymarketid",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "origincitymarketid",
+    "sqlType" : "4"
+  }, {
+    "name" : "origincityname",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "origincityname",
+    "sqlType" : "12"
+  }, {
+    "name" : "originstate",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "originstate",
+    "sqlType" : "12"
+  }, {
+    "name" : "originstatefips",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "originstatefips",
+    "sqlType" : "4"
+  }, {
+    "name" : "originstatename",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "originstatename",
+    "sqlType" : "12"
+  }, {
+    "name" : "originwac",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "originwac",
+    "sqlType" : "4"
+  }, {
+    "name" : "destairportid",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "destairportid",
+    "sqlType" : "4"
+  }, {
+    "name" : "destairportseqid",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "destairportseqid",
+    "sqlType" : "4"
+  }, {
+    "name" : "destcitymarketid",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "destcitymarketid",
+    "sqlType" : "4"
+  }, {
+    "name" : "destcityname",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "destcityname",
+    "sqlType" : "12"
+  }, {
+    "name" : "deststate",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "deststate",
+    "sqlType" : "12"
+  }, {
+    "name" : "deststatefips",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "deststatefips",
+    "sqlType" : "4"
+  }, {
+    "name" : "deststatename",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "deststatename",
+    "sqlType" : "12"
+  }, {
+    "name" : "destwac",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "destwac",
+    "sqlType" : "4"
+  }, {
+    "name" : "depdel15",
+    "type" : [ "null", "boolean" ],
+    "default" : null,
+    "columnName" : "depdel15",
+    "sqlType" : "-7"
+  }, {
+    "name" : "departuredelaygroups",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "departuredelaygroups",
+    "sqlType" : "4"
+  }, {
+    "name" : "deptimeblk",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "deptimeblk",
+    "sqlType" : "12"
+  }, {
+    "name" : "taxiout",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "taxiout",
+    "sqlType" : "4"
+  }, {
+    "name" : "wheelsoff",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "wheelsoff",
+    "sqlType" : "92"
+  }, {
+    "name" : "wheelson",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "wheelson",
+    "sqlType" : "92"
+  }, {
+    "name" : "taxiin",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "taxiin",
+    "sqlType" : "4"
+  }, {
+    "name" : "crsarrtime",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "crsarrtime",
+    "sqlType" : "92"
+  }, {
+    "name" : "arrdelay",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "arrdelay",
+    "sqlType" : "4"
+  }, {
+    "name" : "arrdel15",
+    "type" : [ "null", "boolean" ],
+    "default" : null,
+    "columnName" : "arrdel15",
+    "sqlType" : "-7"
+  }, {
+    "name" : "arrivaldelaygroups",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "arrivaldelaygroups",
+    "sqlType" : "4"
+  }, {
+    "name" : "arrtimeblk",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "arrtimeblk",
+    "sqlType" : "12"
+  }, {
+    "name" : "distancegroup",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "distancegroup",
+    "sqlType" : "4"
+  }, {
+    "name" : "divairportlandings",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "divairportlandings",
+    "sqlType" : "4"
+  } ],
+  "tableName" : "flights"
+}
