@@ -48,13 +48,13 @@ python3 ./build_projectdb.py
 # Part 3. Import data to HDFS and process
 
 # Removing old warehouse directory
-hdfs dfs -rm -r -f -skipTrash /user/team22/project/warehouse
+hdfs dfs -rm -r -f -skipTrash /user/team22/project/warehouse > /dev/null 2>&1
 
 # Read database password
 password=$(head -n 1 ../secrets/.psql.pass)
 
 # Import table to HDFS via Sqoop
-echo "Starting Sqoop job to import all tables..."
+echo "Performing Sqoop job to import all tables..."
 sqoop import-all-tables \
   --connect jdbc:postgresql://hadoop-04.uni.innopolis.ru/team22_projectdb \
   --username team22 \
@@ -63,7 +63,7 @@ sqoop import-all-tables \
   --compress \
   --as-avrodatafile \
   --warehouse-dir /user/team22/project/warehouse \
-  --m 1
+  --m 1 2> /dev/null
 
 # Ensure output directory exists and is clean
 mkdir -p ../output
