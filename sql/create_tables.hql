@@ -1,0 +1,71 @@
+-- Access the database
+USE team22_projectdb;
+
+
+-- Create table with partitions and buckets
+CREATE EXTERNAL TABLE flights (
+    FlightDate DATE,
+    Airline VARCHAR(150),
+    Origin VARCHAR(10),
+    Dest VARCHAR(10),
+    Cancelled BOOLEAN,
+    Diverted BOOLEAN,
+    CRSDepTime VARCHAR(5),
+    DepTime VARCHAR(5),
+    DepDelayMinutes INT,
+    DepDelay INT,
+    ArrTime VARCHAR(5),
+    ArrDelayMinutes INT,
+    AirTime INT,
+    CRSElapsedTime INT,
+    ActualElapsedTime INT,
+    Distance INT,
+    Year INT,
+    Quarter INT,
+    DayOfWeek INT,
+    Marketing_Airline_Network VARCHAR(10),
+    Operated_or_Branded_Code_Share_Partners VARCHAR(100),
+    DOT_ID_Marketing_Airline INT,
+    IATA_Code_Marketing_Airline VARCHAR(10),
+    Flight_Number_Marketing_Airline VARCHAR(10),
+    Operating_Airline VARCHAR(10),
+    DOT_ID_Operating_Airline INT,
+    IATA_Code_Operating_Airline VARCHAR(10),
+    Tail_Number VARCHAR(10),
+    Flight_Number_Operating_Airline VARCHAR(10),
+    OriginAirportID INT,
+    OriginAirportSeqID INT,
+    OriginCityMarketID INT,
+    OriginCityName VARCHAR(50),
+    OriginState VARCHAR(10),
+    OriginStateFips INT,
+    OriginStateName VARCHAR(50),
+    OriginWac INT,
+    DestAirportID INT,
+    DestAirportSeqID INT,
+    DestCityMarketID INT,
+    DestCityName VARCHAR(50),
+    DestState VARCHAR(10),
+    DestStateFips INT,
+    DestStateName VARCHAR(50),
+    DestWac INT,
+    DepDel15 BOOLEAN,
+    DepartureDelayGroups INT,
+    DepTimeBlk VARCHAR(20),
+    TaxiOut INT,
+    WheelsOff VARCHAR(5),
+    WheelsOn VARCHAR(5),
+    TaxiIn INT,
+    CRSArrTime VARCHAR(5),
+    ArrDelay INT,
+    ArrDel15 BOOLEAN,
+    ArrivalDelayGroups INT,
+    ArrTimeBlk VARCHAR(20),
+    DistanceGroup INT,
+    DivAirportLandings INT
+) 
+PARTITIONED BY (Month INT, DayofMonth INT)
+CLUSTERED BY (OriginAirportID, DestAirportID) INTO 64 BUCKETS
+STORED AS AVRO LOCATION '/user/team22/project/hive/warehouse/flights' 
+TBLPROPERTIES ('AVRO.COMPRESS'='SNAPPY');
+
