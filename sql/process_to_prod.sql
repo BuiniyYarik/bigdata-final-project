@@ -1,5 +1,6 @@
--- Create function to format to TIME tupe
-CREATE OR REPLACE FUNCTION format_time(raw_time FLOAT) RETURNS TIME AS $$
+-- Create function to format to HH24:MM time format
+DROP FUNCTION format_time; 
+CREATE OR REPLACE FUNCTION format_time(raw_time FLOAT) RETURNS VARCHAR AS $$
     DECLARE
         time_int INTEGER;
         time_text TEXT;
@@ -16,27 +17,13 @@ CREATE OR REPLACE FUNCTION format_time(raw_time FLOAT) RETURNS TIME AS $$
 	time_text := LPAD(time_int::TEXT, 4, '0');
 
         -- Return the time in HH24:MI format
-        RETURN TO_TIMESTAMP(time_text, 'HH24MI')::TIME;
+        RETURN TO_CHAR(TO_TIMESTAMP(time_text, 'HH24MI'), 'HH24:MI');
     END;
 $$ LANGUAGE plpgsql;
 
 
 -- Import data from raw table and cast necessary fields types 
-INSERT INTO flights (
-    FlightDate, Airline, Origin, Dest, Cancelled, Diverted, CRSDepTime, DepTime,
-    DepDelayMinutes, DepDelay, ArrTime, ArrDelayMinutes, AirTime, CRSElapsedTime,
-    ActualElapsedTime, Distance, Year, Quarter, Month, DayOfMonth, DayOfWeek,
-    Marketing_Airline_Network, Operated_or_Branded_Code_Share_Partners,
-    DOT_ID_Marketing_Airline, IATA_Code_Marketing_Airline,
-    Flight_Number_Marketing_Airline, Operating_Airline, DOT_ID_Operating_Airline,
-    IATA_Code_Operating_Airline, Tail_Number, Flight_Number_Operating_Airline,
-    OriginAirportID, OriginAirportSeqID, OriginCityMarketID, OriginCityName,
-    OriginState, OriginStateFips, OriginStateName, OriginWac, DestAirportID,
-    DestAirportSeqID, DestCityMarketID, DestCityName, DestState, DestStateFips,
-    DestStateName, DestWac, DepDel15, DepartureDelayGroups, DepTimeBlk, TaxiOut,
-    WheelsOff, WheelsOn, TaxiIn, CRSArrTime, ArrDelay, ArrDel15,
-    ArrivalDelayGroups, ArrTimeBlk, DistanceGroup, DivAirportLandings
-)
+INSERT INTO flights
 SELECT
     FlightDate,
     Airline,

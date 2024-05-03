@@ -1,6 +1,6 @@
 -- Add raw table flights
 CREATE TABLE IF NOT EXISTS flights_raw (
-    FlightDate DATE NOT NULL,
+    FlightDate VARCHAR(15) NOT NULL,
     Airline VARCHAR(150) NOT NULL,
     Origin VARCHAR(10) NOT NULL,
     Dest VARCHAR(10) NOT NULL,
@@ -69,17 +69,17 @@ CREATE TABLE IF NOT EXISTS flights_raw (
 
 -- Add production table flights
 CREATE TABLE IF NOT EXISTS flights (
-    FlightDate DATE NOT NULL,
+    FlightDate VARCHAR(15) NOT NULL,
     Airline VARCHAR(150) NOT NULL,
     Origin VARCHAR(10) NOT NULL,
     Dest VARCHAR(10) NOT NULL,
     Cancelled BOOLEAN NOT NULL,
     Diverted BOOLEAN NOT NULL,
-    CRSDepTime TIME NOT NULL,
-    DepTime TIME,
+    CRSDepTime VARCHAR(5) NOT NULL,
+    DepTime VARCHAR(5),
     DepDelayMinutes INT,
     DepDelay INT,
-    ArrTime TIME,
+    ArrTime VARCHAR(5),
     ArrDelayMinutes INT,
     AirTime INT,
     CRSElapsedTime INT,
@@ -123,10 +123,10 @@ CREATE TABLE IF NOT EXISTS flights (
     DepartureDelayGroups INT,
     DepTimeBlk VARCHAR(20),
     TaxiOut INT,
-    WheelsOff TIME,
-    WheelsOn TIME,
+    WheelsOff VARCHAR(5),
+    WheelsOn VARCHAR(5),
     TaxiIn INT,
-    CRSArrTime TIME,
+    CRSArrTime VARCHAR(5),
     ArrDelay INT,
     ArrDel15 BOOLEAN,
     ArrivalDelayGroups INT,
