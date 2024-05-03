@@ -1,15 +1,19 @@
 #!/bin/bash
 
 
+# Define base path
+base_path=~/bigdata-final-project
+
+
 
 # Part 1. Download and save dataset from Kaggle if it is not downloaded yet
 
 # Set the data directory and file name
-directory="../data"
+directory="$base_path/data"
 file="Combined_Flights_2021.csv"
 zip_file="Combined_Flights_2021.csv.zip"
 
-# Check whether data directory exist
+# Ensure the data directory exists
 mkdir -p $directory
 
 # Check if the CSV file already exists
@@ -41,7 +45,7 @@ fi
 
 # Part 2. Create tables in the relational database and import data
 
-python3 ./build_projectdb.py
+python3 $base_path/scripts/build_projectdb.py
 
 
 
@@ -51,7 +55,7 @@ python3 ./build_projectdb.py
 hdfs dfs -rm -r -f -skipTrash /user/team22/project/warehouse > /dev/null 2>&1
 
 # Read database password
-password=$(head -n 1 ../secrets/.psql.pass)
+password=$(head -n 1 $base_path/secrets/.psql.pass)
 
 # Import table to HDFS via Sqoop
 echo "Performing Sqoop job to import all tables..."
@@ -66,11 +70,12 @@ sqoop import-all-tables \
   --m 1 2> /dev/null
 
 # Ensure output directory exists and is clean
-mkdir -p ../output
-rm -f ../output/*.avsc ../output/*.java
+mkdir -p $base_path/output
+rm -f $base_path/output/*.avsc $base_path/output/*.java
 
 # Move AVSC and Java files to output folder
-mv ./*.avsc ../output/
-mv ./*.java ../output/
+mv ./*.avsc $base_path/output/
+mv ./*.java $base_path/output/
 
 echo "Data import and processing completed successfully."
+
