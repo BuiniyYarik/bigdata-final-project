@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS flights_raw (
 );
 
 
--- Add production table flights
+-- Add primary table flights
 CREATE TABLE IF NOT EXISTS flights (
     FlightDate VARCHAR(15) NOT NULL,
     Airline VARCHAR(150) NOT NULL,

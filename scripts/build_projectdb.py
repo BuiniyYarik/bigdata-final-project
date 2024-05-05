@@ -35,7 +35,7 @@ def check_table_exists_and_has_data(cursor, table_name):
 
 # Define constants
 BASE_PATH = os.path.expanduser("~/bigdata-final-project")
-FILE_PATH = os.path.join(BASE_PATH, "secrets/.psql.pass")
+PASS_PATH = os.path.join(BASE_PATH, "secrets/.psql.pass")
 DATA_FILENAME = "Combined_Flights_2021.csv"
 HOSTNAME = 'hadoop-04.uni.innopolis.ru'
 PORT = '5432'
@@ -43,7 +43,7 @@ USERNAME = 'team22'
 DATABASE_NAME = 'team22_projectdb'
 
 # Read password from secrets file
-with open(FILE_PATH, "r", encoding="utf-8") as file:
+with open(PASS_PATH, "r", encoding="utf-8") as file:
     PASSWORD = file.read().rstrip()
 
 # Build the connection string
@@ -81,10 +81,10 @@ with psql.connect(CONN_STRING) as conn:
         conn.commit()
         print("Raw data imported successfully!")
 
-        # Process data from raw to production table
-        print("Processing raw data to production table...")
+        # Process raw data to primary table
+        print("Processing raw data to primary table...")
         with open(
-            os.path.join(BASE_PATH, "sql/process_to_prod.sql"), "r", encoding="utf-8"
+            os.path.join(BASE_PATH, "sql/process_from_raw.sql"), "r", encoding="utf-8"
         ) as file:
             content = file.read()
             cur.execute(content)

@@ -24,8 +24,8 @@ password=$(head -n 1 $base_path/secrets/.hive.pass)
 rm -f $base_path/output/hive_results.txt
 
 # Create database and external table, check the content of table
-echo "Creating database and tables in Hive..."
-beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team22 -p $password -f $base_path/sql/db.hql \
+echo "Creating database and temporary table in Hive..."
+beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team22 -p $password -f $base_path/sql/create_db.hql \
   > $base_path/output/hive_results.txt 2> /dev/null
 
 # Create table with partitions and buckets
@@ -34,7 +34,7 @@ beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team22 -p $password 
 
 # Import data to table with partitions and buckets
 echo "Importing data to Hive table..."
-beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team22 -p $password -f $base_path/sql/import_data.hql > /dev/null 2>&1
+beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team22 -p $password -f $base_path/sql/import_from_temp.hql > /dev/null 2>&1
 
 echo "Hive setup and data import completed successfully."
 

@@ -58,7 +58,7 @@ hdfs dfs -rm -r -f -skipTrash /user/team22/project/warehouse > /dev/null 2>&1
 password=$(head -n 1 $base_path/secrets/.psql.pass)
 
 # Import table to HDFS via Sqoop
-echo "Performing Sqoop job to import all tables..."
+echo "Performing Sqoop job to import the table to HDFS..."
 sqoop import-all-tables \
   --connect jdbc:postgresql://hadoop-04.uni.innopolis.ru/team22_projectdb \
   --username team22 \
