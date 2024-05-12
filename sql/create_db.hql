@@ -14,6 +14,3 @@ TBLPROPERTIES ('avro.schema.url'='/user/team22/project/warehouse/avsc/flights.av
 
 -- Check the content of table
 SELECT * FROM flights_temp LIMIT 10;
-
-
-

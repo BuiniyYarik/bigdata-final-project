@@ -5,16 +5,16 @@ USE team22_projectdb;
 -- Create table with partitions and buckets
 CREATE EXTERNAL TABLE flights (
     FlightDate DATE,
-    Airline VARCHAR(150),
-    Origin VARCHAR(10),
-    Dest VARCHAR(10),
+    Airline VARCHAR(100),
+    Origin VARCHAR(3),
+    Dest VARCHAR(3),
     Cancelled BOOLEAN,
     Diverted BOOLEAN,
-    CRSDepTime VARCHAR(5),
-    DepTime VARCHAR(5),
+    CRSDepTime TIMESTAMP,
+    DepTime TIMESTAMP,
     DepDelayMinutes INT,
     DepDelay INT,
-    ArrTime VARCHAR(5),
+    ArrTime TIMESTAMP,
     ArrDelayMinutes INT,
     AirTime INT,
     CRSElapsedTime INT,
@@ -22,19 +22,22 @@ CREATE EXTERNAL TABLE flights (
     Distance INT,
     Year INT,
     Quarter INT,
+    DayofMonth INT,
     DayOfWeek INT,
-    Marketing_Airline_Network VARCHAR(10),
-    Operated_or_Branded_Code_Share_Partners VARCHAR(100),
-    DOT_ID_Marketing_Airline INT,
-    IATA_Code_Marketing_Airline VARCHAR(10),
-    Flight_Number_Marketing_Airline VARCHAR(10),
-    Operating_Airline VARCHAR(10),
-    DOT_ID_Operating_Airline INT,
-    IATA_Code_Operating_Airline VARCHAR(10),
-    Tail_Number VARCHAR(10),
-    Flight_Number_Operating_Airline VARCHAR(10),
-    OriginAirportID INT,
-    OriginAirportSeqID INT,
+
+    Marketing_Airline_Network VARCHAR(2),
+    Operated_or_Branded_Code_Share_Partners VARCHAR(12),
+    DOT_ID_Marketing_Airline BIGINT,
+    IATA_Code_Marketing_Airline VARCHAR(2),
+    Flight_Number_Marketing_Airline BIGINT,
+    Operating_Airline VARCHAR(2),
+    DOT_ID_Operating_Airline BIGINT,
+    IATA_Code_Operating_Airline VARCHAR(2),
+    Tail_Number VARCHAR(6),
+    Flight_Number_Operating_Airline BIGINT,
+    
+    OriginAirportID BIGINT,
+    OriginAirportSeqID BIGINT,
     OriginCityMarketID INT,
     OriginCityName VARCHAR(50),
     OriginState VARCHAR(10),
@@ -49,6 +52,7 @@ CREATE EXTERNAL TABLE flights (
     DestStateFips INT,
     DestStateName VARCHAR(50),
     DestWac INT,
+    
     DepDel15 BOOLEAN,
     DepartureDelayGroups INT,
     DepTimeBlk VARCHAR(20),
@@ -64,8 +68,7 @@ CREATE EXTERNAL TABLE flights (
     DistanceGroup INT,
     DivAirportLandings INT
 ) 
-PARTITIONED BY (Month INT, DayofMonth INT)
-CLUSTERED BY (OriginAirportID, DestAirportID) INTO 64 BUCKETS
+PARTITIONED BY (Month INT)
+CLUSTERED BY (DayofMonth) INTO 4 BUCKETS
 STORED AS AVRO LOCATION '/user/team22/project/hive/warehouse/flights' 
 TBLPROPERTIES ('AVRO.COMPRESS'='SNAPPY');
-

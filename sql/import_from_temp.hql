@@ -4,15 +4,21 @@ USE team22_projectdb;
 
 -- Import data to Hive table with partitions and buckets from temporary table
 INSERT INTO TABLE flights
-SELECT 
-    FlightDate,
+SELECT
+    to_date(from_unixtime(CAST(FlightDate / 1000 AS BIGINT), 'yyyy-MM-dd HH:mm:ss')) AS FlightDate,
     Airline,
     Origin,
     Dest,
     Cancelled,
     Diverted,
-    CRSDepTime,
-    DepTime,
+    CAST(concat_ws(' ',
+        date_format(from_unixtime(CAST(FlightDate / 1000 AS BIGINT)), 'yyyy-MM-dd'),
+        from_unixtime(CAST(CRSDepTime / 1000 AS BIGINT), 'HH:mm:ss')
+    ) AS TIMESTAMP) AS CRSDepTime,
+    CAST(concat_ws(' ',
+        date_format(from_unixtime(CAST(FlightDate / 1000 AS BIGINT)), 'yyyy-MM-dd'),
+        from_unixtime(CAST(DepTime / 1000 AS BIGINT), 'HH:mm:ss')
+    ) AS TIMESTAMP) AS DepTime,
     DepDelayMinutes,
     DepDelay,
     ArrTime,
@@ -23,7 +29,6 @@ SELECT
     Distance,
     Year,
     Quarter,
-    Month,
     DayofMonth,
     DayOfWeek,
     Marketing_Airline_Network,
@@ -56,16 +61,26 @@ SELECT
     DepartureDelayGroups,
     DepTimeBlk,
     TaxiOut,
-    WheelsOff,
-    WheelsOn,
+    CAST(concat_ws(' ',
+        date_format(from_unixtime(CAST(FlightDate / 1000 AS BIGINT)), 'yyyy-MM-dd'),
+        from_unixtime(CAST(WheelsOff / 1000 AS BIGINT), 'HH:mm:ss')
+    ) AS TIMESTAMP) AS WheelsOff,
+    CAST(concat_ws(' ',
+        date_format(from_unixtime(CAST(FlightDate / 1000 AS BIGINT)), 'yyyy-MM-dd'),
+        from_unixtime(CAST(WheelsOn / 1000 AS BIGINT), 'HH:mm:ss')
+    ) AS TIMESTAMP) AS WheelsOn,
     TaxiIn,
-    CRSArrTime,
+    CAST(concat_ws(' ',
+        date_format(from_unixtime(CAST(FlightDate / 1000 AS BIGINT)), 'yyyy-MM-dd'),
+        from_unixtime(CAST(CRSArrTime / 1000 AS BIGINT), 'HH:mm:ss')
+    ) AS TIMESTAMP) AS CRSArrTime,
     ArrDelay,
     ArrDel15,
     ArrivalDelayGroups,
     ArrTimeBlk,
     DistanceGroup,
-    DivAirportLandings
+    DivAirportLandings,
+    Month
 FROM flights_temp;
 
 
