@@ -1,0 +1,61 @@
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> USE team22_projectdb;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS team22_projectdb.q5_results;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE team22_projectdb.q5_results(
+. . . . . . . . . . . . . . . . . . . . . . .> dayofmonth INTEGER, 
+. . . . . . . . . . . . . . . . . . . . . . .> TotalNum INTEGER,
+. . . . . . . . . . . . . . . . . . . . . . .> CancelledNum INTEGER,
+. . . . . . . . . . . . . . . . . . . . . . .> CancelProportion FLOAT)
+. . . . . . . . . . . . . . . . . . . . . . .> ROW FORMAT DELIMITED
+. . . . . . . . . . . . . . . . . . . . . . .> FIELDS TERMINATED BY ','
+. . . . . . . . . . . . . . . . . . . . . . .> location '/user/team22/project/hive/warehouse/q5'; 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> -- to not display table names with column names
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.resultset.use.unique.column.names = false;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> -- Cancellation rate by day of month
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q5_results
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT t.dayofmonth, t.TotalNum, t.CancelledNum, t.CancelledNum / t.Total Num AS CancelProportion
+. . . . . . . . . . . . . . . . . . . . . . .> FROM (SELECT dayofmonth, count(*) AS TotalNum, count(CASE WHEN cancelled  THEN 1 END) AS CancelledNum
+. . . . . . . . . . . . . . . . . . . . . . .> FROM team22_projectdb.flights GROUP by dayofmonth) AS t
+. . . . . . . . . . . . . . . . . . . . . . .> ORDER BY dayofmonth;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SELECT * FROM q5_results;
++-------------+-----------+---------------+-------------------+
+| dayofmonth  | totalnum  | cancellednum  | cancelproportion  |
++-------------+-----------+---------------+-------------------+
+| 1           | 204371    | 5856          | 0.028653773       |
+| 2           | 203692    | 3916          | 0.019225104       |
+| 3           | 205663    | 2533          | 0.012316265       |
+| 4           | 203777    | 2369          | 0.011625453       |
+| 5           | 205212    | 1799          | 0.008766544       |
+| 6           | 200790    | 2094          | 0.010428806       |
+| 7           | 206756    | 2681          | 0.012966976       |
+| 8           | 209607    | 2519          | 0.012017729       |
+| 9           | 203895    | 3350          | 0.016430026       |
+| 10          | 206631    | 4296          | 0.020790685       |
+| 11          | 208710    | 4704          | 0.02253845        |
+| 12          | 210619    | 2237          | 0.010621074       |
+| 13          | 203191    | 4095          | 0.020153452       |
+| 14          | 207593    | 6497          | 0.031296816       |
+| 15          | 211737    | 7635          | 0.036058884       |
+| 16          | 206397    | 4651          | 0.022534242       |
+| 17          | 207369    | 4881          | 0.023537751       |
+| 18          | 210752    | 5380          | 0.025527634       |
+| 19          | 211622    | 2896          | 0.013684778       |
+| 20          | 205166    | 1473          | 0.007179552       |
+| 21          | 210430    | 2754          | 0.013087488       |
+| 22          | 213107    | 2962          | 0.013899121       |
+| 23          | 208926    | 2076          | 0.009936533       |
+| 24          | 206852    | 2770          | 0.013391217       |
+| 25          | 200604    | 3306          | 0.01648023        |
+| 26          | 207450    | 3456          | 0.016659437       |
+| 27          | 206998    | 2721          | 0.013145055       |
+| 28          | 211552    | 3317          | 0.01567936        |
+| 29          | 200180    | 2975          | 0.014861625       |
+| 30          | 194155    | 4000          | 0.020602096       |
+| 31          | 118067    | 4819          | 0.040815808       |
++-------------+-----------+---------------+-------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 

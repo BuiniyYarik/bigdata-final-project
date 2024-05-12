@@ -1,0 +1,41 @@
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> USE team22_projectdb;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS team22_projectdb.q6_results;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE team22_projectdb.q6_results(
+. . . . . . . . . . . . . . . . . . . . . . .> month INTEGER, 
+. . . . . . . . . . . . . . . . . . . . . . .> TotalNum INTEGER,
+. . . . . . . . . . . . . . . . . . . . . . .> CancelledNum INTEGER,
+. . . . . . . . . . . . . . . . . . . . . . .> CancelProportion FLOAT)
+. . . . . . . . . . . . . . . . . . . . . . .> ROW FORMAT DELIMITED
+. . . . . . . . . . . . . . . . . . . . . . .> FIELDS TERMINATED BY ','
+. . . . . . . . . . . . . . . . . . . . . . .> location '/user/team22/project/hive/warehouse/q6'; 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> -- to not display table names with column names
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.resultset.use.unique.column.names = false;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> -- Cancellation rate by month
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q6_results
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT t.month, t.TotalNum, t.CancelledNum, t.CancelledNum / t.TotalNum A S CancelProportion
+. . . . . . . . . . . . . . . . . . . . . . .> FROM (SELECT month, count(*) AS TotalNum, count(CASE WHEN cancelled THEN  1 END) AS CancelledNum
+. . . . . . . . . . . . . . . . . . . . . . .> FROM team22_projectdb.flights GROUP by month) AS t
+. . . . . . . . . . . . . . . . . . . . . . .> ORDER BY month;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SELECT * FROM q6_results;
++--------+-----------+---------------+-------------------+
+| month  | totalnum  | cancellednum  | cancelproportion  |
++--------+-----------+---------------+-------------------+
+| 1      | 379384    | 4155          | 0.010951964       |
+| 2      | 350170    | 20201         | 0.057689123       |
+| 3      | 467126    | 5904          | 0.012638988       |
+| 4      | 473936    | 2561          | 0.005403683       |
+| 5      | 520059    | 2350          | 0.004518718       |
+| 6      | 573779    | 9196          | 0.016027076       |
+| 7      | 615703    | 10195         | 0.016558308       |
+| 8      | 611494    | 18734         | 0.030636441       |
+| 9      | 567916    | 7776          | 0.013692166       |
+| 10     | 595373    | 12614         | 0.021186719       |
+| 11     | 576693    | 3559          | 0.0061713946      |
+| 12     | 580238    | 13773         | 0.023736812       |
++--------+-----------+---------------+-------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 

@@ -1,0 +1,414 @@
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> USE team22_projectdb;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS team22_projectdb.q3_results;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE team22_projectdb.q3_results(
+. . . . . . . . . . . . . . . . . . . . . . .> OriginCity VARCHAR(50),
+. . . . . . . . . . . . . . . . . . . . . . .> DestCity VARCHAR(50), 
+. . . . . . . . . . . . . . . . . . . . . . .> FlightOut INTEGER, 
+. . . . . . . . . . . . . . . . . . . . . . .> FlightIn INTEGER)
+. . . . . . . . . . . . . . . . . . . . . . .> ROW FORMAT DELIMITED
+. . . . . . . . . . . . . . . . . . . . . . .> FIELDS TERMINATED BY ';'
+. . . . . . . . . . . . . . . . . . . . . . .> location '/user/team22/project/hive/warehouse/q3'; 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> -- to not display table names with column names
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.resultset.use.unique.column.names = false;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> -- Number of flight in and out of the city
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q3_results
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT OriginCity,DestCity, FlightOut, FlightIn FROM
+. . . . . . . . . . . . . . . . . . . . . . .> (SELECT OriginCityName as OriginCity, count(*) AS FlightOut FROM team22_p rojectdb.flights GROUP by OriginCityName) AS origin_table
+. . . . . . . . . . . . . . . . . . . . . . .> FULL OUTER JOIN 
+. . . . . . . . . . . . . . . . . . . . . . .> (SELECT DestCityName as DestCity, count(*) AS FlightIn FROM team22_projec tdb.flights GROUP by DestCityName) AS dest_table
+. . . . . . . . . . . . . . . . . . . . . . .> ON origin_table.OriginCity = dest_table.DestCity
+. . . . . . . . . . . . . . . . . . . . . . .> ORDER BY FlightOut DESC, FlightIn DESC;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SELECT * FROM q3_results;
++-------------------------------------+-------------------------------------+------------+-----------+
+|             origincity              |              destcity               | flightout  | flightin  |
++-------------------------------------+-------------------------------------+------------+-----------+
+| Chicago, IL                         | Chicago, IL                         | 350085     | 350036    |
+| Atlanta, GA                         | Atlanta, GA                         | 313287     | 313281    |
+| Dallas/Fort Worth, TX               | Dallas/Fort Worth, TX               | 280418     | 280342    |
+| Denver, CO                          | Denver, CO                          | 268140     | 268103    |
+| Charlotte, NC                       | Charlotte, NC                       | 226221     | 226223    |
+| Houston, TX                         | Houston, TX                         | 202079     | 202002    |
+| Los Angeles, CA                     | Los Angeles, CA                     | 174318     | 174235    |
+| New York, NY                        | New York, NY                        | 170530     | 170518    |
+| Seattle, WA                         | Seattle, WA                         | 168025     | 167993    |
+| Phoenix, AZ                         | Phoenix, AZ                         | 166639     | 166624    |
+| Washington, DC                      | Washington, DC                      | 159467     | 159478    |
+| Las Vegas, NV                       | Las Vegas, NV                       | 141412     | 141433    |
+| Orlando, FL                         | Orlando, FL                         | 132637     | 132627    |
+| Detroit, MI                         | Detroit, MI                         | 130232     | 130203    |
+| Minneapolis, MN                     | Minneapolis, MN                     | 121481     | 121492    |
+| Salt Lake City, UT                  | Salt Lake City, UT                  | 119075     | 119088    |
+| Philadelphia, PA                    | Philadelphia, PA                    | 103243     | 103224    |
+| Newark, NJ                          | Newark, NJ                          | 102451     | 102450    |
+| San Francisco, CA                   | San Francisco, CA                   | 98791      | 98781     |
+| Miami, FL                           | Miami, FL                           | 92012      | 92033     |
+| Boston, MA                          | Boston, MA                          | 90839      | 90822     |
+| Fort Lauderdale, FL                 | Fort Lauderdale, FL                 | 87488      | 87467     |
+| Baltimore, MD                       | Baltimore, MD                       | 75477      | 75473     |
+| Nashville, TN                       | Nashville, TN                       | 74828      | 74842     |
+| Tampa, FL                           | Tampa, FL                           | 68399      | 68400     |
+| San Diego, CA                       | San Diego, CA                       | 64257      | 64271     |
+| Austin, TX                          | Austin, TX                          | 61530      | 61545     |
+| Dallas, TX                          | Dallas, TX                          | 58386      | 58382     |
+| Portland, OR                        | Portland, OR                        | 55861      | 55871     |
+| St. Louis, MO                       | St. Louis, MO                       | 50723      | 50728     |
+| Honolulu, HI                        | Honolulu, HI                        | 47672      | 47688     |
+| Raleigh/Durham, NC                  | Raleigh/Durham, NC                  | 44213      | 44225     |
+| Sacramento, CA                      | Sacramento, CA                      | 42841      | 42840     |
+| Fort Myers, FL                      | Fort Myers, FL                      | 40786      | 40781     |
+| San Jose, CA                        | San Jose, CA                        | 38148      | 38147     |
+| Kansas City, MO                     | Kansas City, MO                     | 37898      | 37902     |
+| New Orleans, LA                     | New Orleans, LA                     | 37634      | 37670     |
+| Indianapolis, IN                    | Indianapolis, IN                    | 37433      | 37467     |
+| Santa Ana, CA                       | Santa Ana, CA                       | 36832      | 36831     |
+| Cincinnati, OH                      | Cincinnati, OH                      | 35299      | 35322     |
+| Oakland, CA                         | Oakland, CA                         | 35256      | 35263     |
+| Cleveland, OH                       | Cleveland, OH                       | 35223      | 35239     |
+| Pittsburgh, PA                      | Pittsburgh, PA                      | 33894      | 33902     |
+| Columbus, OH                        | Columbus, OH                        | 33594      | 33601     |
+| San Juan, PR                        | San Juan, PR                        | 29533      | 29537     |
+| San Antonio, TX                     | San Antonio, TX                     | 28217      | 28220     |
+| Kahului, HI                         | Kahului, HI                         | 26924      | 26925     |
+| Milwaukee, WI                       | Milwaukee, WI                       | 25167      | 25169     |
+| Boise, ID                           | Boise, ID                           | 24975      | 24977     |
+| Jacksonville, FL                    | Jacksonville, FL                    | 24811      | 24819     |
+| Charleston, SC                      | Charleston, SC                      | 24305      | 24305     |
+| West Palm Beach/Palm Beach, FL      | West Palm Beach/Palm Beach, FL      | 21973      | 21964     |
+| Omaha, NE                           | Omaha, NE                           | 21125      | 21125     |
+| Louisville, KY                      | Louisville, KY                      | 20867      | 20875     |
+| Reno, NV                            | Reno, NV                            | 20857      | 20861     |
+| Hartford, CT                        | Hartford, CT                        | 20586      | 20589     |
+| Memphis, TN                         | Memphis, TN                         | 20550      | 20547     |
+| Ontario, CA                         | Ontario, CA                         | 20141      | 20143     |
+| Spokane, WA                         | Spokane, WA                         | 19693      | 19694     |
+| Oklahoma City, OK                   | Oklahoma City, OK                   | 19660      | 19669     |
+| Burbank, CA                         | Burbank, CA                         | 19539      | 19550     |
+| Richmond, VA                        | Richmond, VA                        | 19423      | 19428     |
+| Anchorage, AK                       | Anchorage, AK                       | 19333      | 19331     |
+| Norfolk, VA                         | Norfolk, VA                         | 18938      | 18944     |
+| Savannah, GA                        | Savannah, GA                        | 18206      | 18211     |
+| Albuquerque, NM                     | Albuquerque, NM                     | 17891      | 17897     |
+| Grand Rapids, MI                    | Grand Rapids, MI                    | 17506      | 17504     |
+| Myrtle Beach, SC                    | Myrtle Beach, SC                    | 16972      | 16971     |
+| Buffalo, NY                         | Buffalo, NY                         | 16909      | 16913     |
+| Sarasota/Bradenton, FL              | Sarasota/Bradenton, FL              | 16241      | 16247     |
+| Knoxville, TN                       | Knoxville, TN                       | 15594      | 15611     |
+| Tucson, AZ                          | Tucson, AZ                          | 15374      | 15374     |
+| Kona, HI                            | Kona, HI                            | 14577      | 14579     |
+| Des Moines, IA                      | Des Moines, IA                      | 14532      | 14538     |
+| Birmingham, AL                      | Birmingham, AL                      | 14500      | 14502     |
+| El Paso, TX                         | El Paso, TX                         | 14422      | 14428     |
+| Tulsa, OK                           | Tulsa, OK                           | 14353      | 14357     |
+| Pensacola, FL                       | Pensacola, FL                       | 13943      | 13948     |
+| Palm Springs, CA                    | Palm Springs, CA                    | 13556      | 13557     |
+| Greer, SC                           | Greer, SC                           | 13360      | 13364     |
+| Providence, RI                      | Providence, RI                      | 12187      | 12190     |
+| Long Beach, CA                      | Long Beach, CA                      | 12140      | 12143     |
+| Valparaiso, FL                      | Valparaiso, FL                      | 12019      | 12024     |
+| Syracuse, NY                        | Syracuse, NY                        | 11968      | 11975     |
+| Colorado Springs, CO                | Colorado Springs, CO                | 11902      | 11906     |
+| Little Rock, AR                     | Little Rock, AR                     | 11896      | 11897     |
+| Fresno, CA                          | Fresno, CA                          | 11875      | 11877     |
+| Albany, NY                          | Albany, NY                          | 11725      | 11726     |
+| Bozeman, MT                         | Bozeman, MT                         | 11684      | 11685     |
+| Rochester, NY                       | Rochester, NY                       | 11587      | 11595     |
+| Lihue, HI                           | Lihue, HI                           | 11209      | 11216     |
+| Greensboro/High Point, NC           | Greensboro/High Point, NC           | 11208      | 11212     |
+| Portland, ME                        | Portland, ME                        | 11052      | 11051     |
+| Madison, WI                         | Madison, WI                         | 10817      | 10817     |
+| Dayton, OH                          | Dayton, OH                          | 10636      | 10634     |
+| Key West, FL                        | Key West, FL                        | 10305      | 10304     |
+| Asheville, NC                       | Asheville, NC                       | 10249      | 10258     |
+| Fayetteville, AR                    | Fayetteville, AR                    | 10081      | 10082     |
+| Panama City, FL                     | Panama City, FL                     | 10062      | 10058     |
+| Sanford, FL                         | Sanford, FL                         | 9677       | 9691      |
++-------------------------------------+-------------------------------------+------------+-----------+
+|             origincity              |              destcity               | flightout  | flightin  |
++-------------------------------------+-------------------------------------+------------+-----------+
+| Wichita, KS                         | Wichita, KS                         | 9594       | 9598      |
+| Cedar Rapids/Iowa City, IA          | Cedar Rapids/Iowa City, IA          | 9118       | 9114      |
+| Harrisburg, PA                      | Harrisburg, PA                      | 8886       | 8885      |
+| Lexington, KY                       | Lexington, KY                       | 8757       | 8748      |
+| Eugene, OR                          | Eugene, OR                          | 8608       | 8604      |
+| Huntsville, AL                      | Huntsville, AL                      | 8556       | 8558      |
+| Springfield, MO                     | Springfield, MO                     | 8548       | 8547      |
+| Jackson/Vicksburg, MS               | Jackson/Vicksburg, MS               | 8353       | 8356      |
+| Sioux Falls, SD                     | Sioux Falls, SD                     | 8350       | 8348      |
+| Medford, OR                         | Medford, OR                         | 8021       | 8018      |
+| Midland/Odessa, TX                  | Midland/Odessa, TX                  | 7937       | 7937      |
+| Bend/Redmond, OR                    | Bend/Redmond, OR                    | 7887       | 7884      |
+| Columbia, SC                        | Columbia, SC                        | 7874       | 7874      |
+| St. Petersburg, FL                  | St. Petersburg, FL                  | 7627       | 7632      |
+| Wilmington, NC                      | Wilmington, NC                      | 7487       | 7486      |
+| Appleton, WI                        | Appleton, WI                        | 7108       | 7109      |
+| Chattanooga, TN                     | Chattanooga, TN                     | 7044       | 7039      |
+| Burlington, VT                      | Burlington, VT                      | 6979       | 6984      |
+| Santa Barbara, CA                   | Santa Barbara, CA                   | 6716       | 6722      |
+| Charlotte Amalie, VI                | Charlotte Amalie, VI                | 6681       | 6680      |
+| White Plains, NY                    | White Plains, NY                    | 6678       | 6684      |
+| Fargo, ND                           | Fargo, ND                           | 6478       | 6478      |
+| Jackson, WY                         | Jackson, WY                         | 6469       | 6471      |
+| Manchester, NH                      | Manchester, NH                      | 6287       | 6288      |
+| Fort Wayne, IN                      | Fort Wayne, IN                      | 6087       | 6086      |
+| South Bend, IN                      | South Bend, IN                      | 6081       | 6081      |
+| Rapid City, SD                      | Rapid City, SD                      | 6041       | 6041      |
+| Missoula, MT                        | Missoula, MT                        | 6034       | 6031      |
+| Punta Gorda, FL                     | Punta Gorda, FL                     | 5974       | 5987      |
+| Lubbock, TX                         | Lubbock, TX                         | 5960       | 5961      |
+| Aspen, CO                           | Aspen, CO                           | 5902       | 5903      |
+| Pasco/Kennewick/Richland, WA        | Pasco/Kennewick/Richland, WA        | 5869       | 5869      |
+| Baton Rouge, LA                     | Baton Rouge, LA                     | 5763       | 5764      |
+| Kalispell, MT                       | Kalispell, MT                       | 5720       | 5719      |
+| Shreveport, LA                      | Shreveport, LA                      | 5584       | 5585      |
+| Billings, MT                        | Billings, MT                        | 5544       | 5538      |
+| Traverse City, MI                   | Traverse City, MI                   | 5516       | 5516      |
+| Allentown/Bethlehem/Easton, PA      | Allentown/Bethlehem/Easton, PA      | 5360       | 5365      |
+| Roanoke, VA                         | Roanoke, VA                         | 5299       | 5296      |
+| Mobile, AL                          | Mobile, AL                          | 5282       | 5283      |
+| Tallahassee, FL                     | Tallahassee, FL                     | 5241       | 5242      |
+| Green Bay, WI                       | Green Bay, WI                       | 5170       | 5168      |
+| Bangor, ME                          | Bangor, ME                          | 5067       | 5069      |
+| Grand Junction, CO                  | Grand Junction, CO                  | 5025       | 5023      |
+| Hilo, HI                            | Hilo, HI                            | 5024       | 5026      |
+| Islip, NY                           | Islip, NY                           | 5012       | 5009      |
+| Corpus Christi, TX                  | Corpus Christi, TX                  | 4950       | 4950      |
+| Lafayette, LA                       | Lafayette, LA                       | 4888       | 4888      |
+| Mission/McAllen/Edinburg, TX        | Mission/McAllen/Edinburg, TX        | 4880       | 4881      |
+| Charlottesville, VA                 | Charlottesville, VA                 | 4808       | 4810      |
+| Augusta, GA                         | Augusta, GA                         | 4808       | 4803      |
+| Amarillo, TX                        | Amarillo, TX                        | 4724       | 4725      |
+| Fairbanks, AK                       | Fairbanks, AK                       | 4678       | 4680      |
+| Durango, CO                         | Durango, CO                         | 4395       | 4398      |
+| Moline, IL                          | Moline, IL                          | 4352       | 4356      |
+| Bismarck/Mandan, ND                 | Bismarck/Mandan, ND                 | 4157       | 4156      |
+| Hilton Head, SC                     | Hilton Head, SC                     | 4140       | 4137      |
+| Gulfport/Biloxi, MS                 | Gulfport/Biloxi, MS                 | 4109       | 4110      |
+| Juneau, AK                          | Juneau, AK                          | 3983       | 3983      |
+| Idaho Falls, ID                     | Idaho Falls, ID                     | 3973       | 3970      |
+| Evansville, IN                      | Evansville, IN                      | 3921       | 3922      |
+| Harlingen/San Benito, TX            | Harlingen/San Benito, TX            | 3901       | 3901      |
+| San Luis Obispo, CA                 | San Luis Obispo, CA                 | 3869       | 3869      |
+| St. George, UT                      | St. George, UT                      | 3810       | 3809      |
+| Gainesville, FL                     | Gainesville, FL                     | 3768       | 3769      |
+| Akron, OH                           | Akron, OH                           | 3720       | 3721      |
+| Monterey, CA                        | Monterey, CA                        | 3669       | 3672      |
+| Montgomery, AL                      | Montgomery, AL                      | 3602       | 3602      |
+| Santa Rosa, CA                      | Santa Rosa, CA                      | 3522       | 3523      |
+| Peoria, IL                          | Peoria, IL                          | 3515       | 3515      |
+| Bristol/Johnson City/Kingsport, TN  | Bristol/Johnson City/Kingsport, TN  | 3495       | 3495      |
+| Charleston/Dunbar, WV               | Charleston/Dunbar, WV               | 3415       | 3415      |
+| Fayetteville, NC                    | Fayetteville, NC                    | 3408       | 3408      |
+| Flint, MI                           | Flint, MI                           | 3379       | 3378      |
+| Daytona Beach, FL                   | Daytona Beach, FL                   | 3310       | 3307      |
+| Jacksonville/Camp Lejeune, NC       | Jacksonville/Camp Lejeune, NC       | 3162       | 3161      |
+| Montrose/Delta, CO                  | Montrose/Delta, CO                  | 3138       | 3139      |
+| Atlantic City, NJ                   | Atlantic City, NJ                   | 3117       | 3115      |
+| Killeen, TX                         | Killeen, TX                         | 3106       | 3107      |
+| State College, PA                   | State College, PA                   | 3103       | 3102      |
+| Great Falls, MT                     | Great Falls, MT                     | 3071       | 3069      |
+| Alexandria, LA                      | Alexandria, LA                      | 3046       | 3048      |
+| Eagle, CO                           | Eagle, CO                           | 2986       | 2985      |
+| Flagstaff, AZ                       | Flagstaff, AZ                       | 2959       | 2959      |
+| Scranton/Wilkes-Barre, PA           | Scranton/Wilkes-Barre, PA           | 2891       | 2891      |
+| Rochester, MN                       | Rochester, MN                       | 2878       | 2878      |
+| Mosinee, WI                         | Mosinee, WI                         | 2778       | 2778      |
+| Minot, ND                           | Minot, ND                           | 2772       | 2771      |
+| Bloomington/Normal, IL              | Bloomington/Normal, IL              | 2657       | 2657      |
+| Bakersfield, CA                     | Bakersfield, CA                     | 2645       | 2645      |
+| Melbourne, FL                       | Melbourne, FL                       | 2542       | 2542      |
+| Lansing, MI                         | Lansing, MI                         | 2502       | 2501      |
+| Monroe, LA                          | Monroe, LA                          | 2498       | 2498      |
+| Hayden, CO                          | Hayden, CO                          | 2495       | 2495      |
+| Bellingham, WA                      | Bellingham, WA                      | 2466       | 2468      |
+| Duluth, MN                          | Duluth, MN                          | 2437       | 2436      |
+| Brownsville, TX                     | Brownsville, TX                     | 2430       | 2429      |
+| Abilene, TX                         | Abilene, TX                         | 2389       | 2388      |
+| Lincoln, NE                         | Lincoln, NE                         | 2316       | 2317      |
+| Laredo, TX                          | Laredo, TX                          | 2259       | 2262      |
++-------------------------------------+-------------------------------------+------------+-----------+
+|             origincity              |              destcity               | flightout  | flightin  |
++-------------------------------------+-------------------------------------+------------+-----------+
+| Everett, WA                         | Everett, WA                         | 2168       | 2166      |
+| Ketchikan, AK                       | Ketchikan, AK                       | 2163       | 2163      |
+| Sun Valley/Hailey/Ketchum, ID       | Sun Valley/Hailey/Ketchum, ID       | 2157       | 2158      |
+| Kalamazoo, MI                       | Kalamazoo, MI                       | 2157       | 2157      |
+| Nantucket, MA                       | Nantucket, MA                       | 2122       | 2122      |
+| Santa Fe, NM                        | Santa Fe, NM                        | 2118       | 2118      |
+| San Angelo, TX                      | San Angelo, TX                      | 2116       | 2116      |
+| La Crosse, WI                       | La Crosse, WI                       | 2107       | 2107      |
+| College Station/Bryan, TX           | College Station/Bryan, TX           | 2062       | 2063      |
+| Casper, WY                          | Casper, WY                          | 2015       | 2015      |
+| Yuma, AZ                            | Yuma, AZ                            | 1966       | 1966      |
+| Newport News/Williamsburg, VA       | Newport News/Williamsburg, VA       | 1913       | 1913      |
+| Trenton, NJ                         | Trenton, NJ                         | 1850       | 1850      |
+| Columbia, MO                        | Columbia, MO                        | 1828       | 1829      |
+| Saginaw/Bay City/Midland, MI        | Saginaw/Bay City/Midland, MI        | 1788       | 1788      |
+| Lake Charles, LA                    | Lake Charles, LA                    | 1786       | 1788      |
+| Champaign/Urbana, IL                | Champaign/Urbana, IL                | 1758       | 1756      |
+| Lynchburg, VA                       | Lynchburg, VA                       | 1738       | 1739      |
+| Arcata/Eureka, CA                   | Arcata/Eureka, CA                   | 1732       | 1735      |
+| Helena, MT                          | Helena, MT                          | 1714       | 1714      |
+| Waco, TX                            | Waco, TX                            | 1623       | 1623      |
+| Aguadilla, PR                       | Aguadilla, PR                       | 1592       | 1596      |
+| Salisbury, MD                       | Salisbury, MD                       | 1573       | 1574      |
+| Erie, PA                            | Erie, PA                            | 1505       | 1505      |
+| New Bern/Morehead/Beaufort, NC      | New Bern/Morehead/Beaufort, NC      | 1490       | 1491      |
+| Ithaca/Cortland, NY                 | Ithaca/Cortland, NY                 | 1464       | 1465      |
+| Marquette, MI                       | Marquette, MI                       | 1463       | 1463      |
+| Columbus, GA                        | Columbus, GA                        | 1459       | 1462      |
+| Manhattan/Ft. Riley, KS             | Manhattan/Ft. Riley, KS             | 1456       | 1457      |
+| Christiansted, VI                   | Christiansted, VI                   | 1448       | 1447      |
+| Tyler, TX                           | Tyler, TX                           | 1421       | 1421      |
+| Springfield, IL                     | Springfield, IL                     | 1406       | 1407      |
+| Fort Smith, AR                      | Fort Smith, AR                      | 1345       | 1346      |
+| Ashland, WV                         | Ashland, WV                         | 1340       | 1340      |
+| Toledo, OH                          | Toledo, OH                          | 1318       | 1314      |
+| Belleville, IL                      | Belleville, IL                      | 1318       | 1311      |
+| Grand Forks, ND                     | Grand Forks, ND                     | 1274       | 1274      |
+| Wichita Falls, TX                   | Wichita Falls, TX                   | 1267       | 1268      |
+| Concord, NC                         | Concord, NC                         | 1262       | 1259      |
+| Redding, CA                         | Redding, CA                         | 1232       | 1234      |
+| Lawton/Fort Sill, OK                | Lawton/Fort Sill, OK                | 1199       | 1199      |
+| Valdosta, GA                        | Valdosta, GA                        | 1180       | 1180      |
+| Twin Falls, ID                      | Twin Falls, ID                      | 1158       | 1137      |
+| Roswell, NM                         | Roswell, NM                         | 1157       | 1158      |
+| Williston, ND                       | Williston, ND                       | 1109       | 1109      |
+| Sitka, AK                           | Sitka, AK                           | 1104       | 1104      |
+| Texarkana, AR                       | Texarkana, AR                       | 1070       | 1071      |
+| Elmira/Corning, NY                  | Elmira/Corning, NY                  | 1069       | 1068      |
+| Dothan, AL                          | Dothan, AL                          | 1061       | 1062      |
+| Cody, WY                            | Cody, WY                            | 1047       | 1048      |
+| Albany, GA                          | Albany, GA                          | 1046       | 1046      |
+| Latrobe, PA                         | Latrobe, PA                         | 1046       | 1045      |
+| Brunswick, GA                       | Brunswick, GA                       | 1031       | 1031      |
+| Jamestown, ND                       | Jamestown, ND                       | 1021       | 1021      |
+| Martha's Vineyard, MA               | Martha's Vineyard, MA               | 1011       | 1011      |
+| Lewiston, ID                        | Lewiston, ID                        | 1008       | 1009      |
+| Columbus, MS                        | Columbus, MS                        | 1005       | 1006      |
+| Pullman, WA                         | Pullman, WA                         | 966        | 966       |
+| Beaumont/Port Arthur, TX            | Beaumont/Port Arthur, TX            | 965        | 965       |
+| Gunnison, CO                        | Gunnison, CO                        | 950        | 951       |
+| Grand Island, NE                    | Grand Island, NE                    | 949        | 950       |
+| Provo, UT                           | Provo, UT                           | 940        | 938       |
+| Kearney, NE                         | Kearney, NE                         | 938        | 941       |
+| Pocatello, ID                       | Pocatello, ID                       | 934        | 933       |
+| Rhinelander, WI                     | Rhinelander, WI                     | 931        | 931       |
+| Longview, TX                        | Longview, TX                        | 926        | 927       |
+| Greenville, NC                      | Greenville, NC                      | 914        | 915       |
+| Kodiak, AK                          | Kodiak, AK                          | 913        | 914       |
+| Pellston, MI                        | Pellston, MI                        | 883        | 905       |
+| Clarksburg/Fairmont, WV             | Clarksburg/Fairmont, WV             | 883        | 881       |
+| Sioux City, IA                      | Sioux City, IA                      | 880        | 881       |
+| Prescott, AZ                        | Prescott, AZ                        | 867        | 867       |
+| Joplin, MO                          | Joplin, MO                          | 823        | 823       |
+| Plattsburgh, NY                     | Plattsburgh, NY                     | 823        | 822       |
+| Wenatchee, WA                       | Wenatchee, WA                       | 810        | 810       |
+| Rockford, IL                        | Rockford, IL                        | 762        | 757       |
+| Walla Walla, WA                     | Walla Walla, WA                     | 759        | 759       |
+| Yakima, WA                          | Yakima, WA                          | 754        | 754       |
+| Gillette, WY                        | Gillette, WY                        | 751        | 751       |
+| Aberdeen, SD                        | Aberdeen, SD                        | 750        | 750       |
+| Bemidji, MN                         | Bemidji, MN                         | 734        | 734       |
+| Hancock/Houghton, MI                | Hancock/Houghton, MI                | 731        | 731       |
+| Muskegon, MI                        | Muskegon, MI                        | 729        | 729       |
+| Paducah, KY                         | Paducah, KY                         | 729        | 729       |
+| Iron Mountain/Kingsfd, MI           | Iron Mountain/Kingsfd, MI           | 729        | 729       |
+| Sault Ste. Marie, MI                | Sault Ste. Marie, MI                | 729        | 729       |
+| Newburgh/Poughkeepsie, NY           | Newburgh/Poughkeepsie, NY           | 728        | 727       |
+| Garden City, KS                     | Garden City, KS                     | 727        | 726       |
+| Eau Claire, WI                      | Eau Claire, WI                      | 726        | 726       |
+| Florence, SC                        | Florence, SC                        | 725        | 726       |
+| Petersburg, AK                      | Petersburg, AK                      | 724        | 724       |
+| Wrangell, AK                        | Wrangell, AK                        | 724        | 724       |
+| Yakutat, AK                         | Yakutat, AK                         | 724        | 724       |
+| Cordova, AK                         | Cordova, AK                         | 724        | 724       |
+| Sheridan, WY                        | Sheridan, WY                        | 718        | 718       |
+| Moab, UT                            | Moab, UT                            | 718        | 718       |
+| Staunton, VA                        | Staunton, VA                        | 700        | 701       |
+| Bethel, AK                          | Bethel, AK                          | 698        | 698       |
+| Butte, MT                           | Butte, MT                           | 690        | 690       |
+| Escanaba, MI                        | Escanaba, MI                        | 685        | 685       |
++-------------------------------------+-------------------------------------+------------+-----------+
+|             origincity              |              destcity               | flightout  | flightin  |
++-------------------------------------+-------------------------------------+------------+-----------+
+| Salina, KS                          | Salina, KS                          | 684        | 684       |
+| Johnstown, PA                       | Johnstown, PA                       | 675        | 675       |
+| Elko, NV                            | Elko, NV                            | 674        | 674       |
+| Stockton, CA                        | Stockton, CA                        | 666        | 664       |
+| Lewisburg, WV                       | Lewisburg, WV                       | 662        | 662       |
+| Del Rio, TX                         | Del Rio, TX                         | 661        | 661       |
+| Devils Lake, ND                     | Devils Lake, ND                     | 657        | 657       |
+| Guam, TT                            | Guam, TT                            | 645        | 643       |
+| International Falls, MN             | International Falls, MN             | 642        | 642       |
+| Brainerd, MN                        | Brainerd, MN                        | 640        | 640       |
+| Watertown, NY                       | Watertown, NY                       | 636        | 637       |
+| Hibbing, MN                         | Hibbing, MN                         | 632        | 632       |
+| Vernal, UT                          | Vernal, UT                          | 630        | 630       |
+| Ogdensburg, NY                      | Ogdensburg, NY                      | 628        | 628       |
+| Cape Girardeau, MO                  | Cape Girardeau, MO                  | 627        | 627       |
+| Hays, KS                            | Hays, KS                            | 626        | 627       |
+| Liberal, KS                         | Liberal, KS                         | 626        | 626       |
+| Scottsbluff, NE                     | Scottsbluff, NE                     | 626        | 626       |
+| Victoria, TX                        | Victoria, TX                        | 626        | 626       |
+| Alamosa, CO                         | Alamosa, CO                         | 626        | 626       |
+| Laramie, WY                         | Laramie, WY                         | 626        | 626       |
+| Hattiesburg/Laurel, MS              | Hattiesburg/Laurel, MS              | 626        | 626       |
+| Decatur, IL                         | Decatur, IL                         | 626        | 626       |
+| North Platte, NE                    | North Platte, NE                    | 626        | 626       |
+| Dodge City, KS                      | Dodge City, KS                      | 624        | 625       |
+| Alpena, MI                          | Alpena, MI                          | 624        | 624       |
+| Cedar City, UT                      | Cedar City, UT                      | 624        | 624       |
+| Pueblo, CO                          | Pueblo, CO                          | 622        | 622       |
+| Meridian, MS                        | Meridian, MS                        | 613        | 613       |
+| Watertown, SD                       | Watertown, SD                       | 612        | 612       |
+| Pierre, SD                          | Pierre, SD                          | 603        | 604       |
+| Rock Springs, WY                    | Rock Springs, WY                    | 589        | 589       |
+| Kotzebue, AK                        | Kotzebue, AK                        | 584        | 584       |
+| Riverton/Lander, WY                 | Riverton/Lander, WY                 | 584        | 584       |
+| Nome, AK                            | Nome, AK                            | 584        | 584       |
+| Dubuque, IA                         | Dubuque, IA                         | 572        | 573       |
+| Stillwater, OK                      | Stillwater, OK                      | 554        | 553       |
+| Presque Isle/Houlton, ME            | Presque Isle/Houlton, ME            | 552        | 552       |
+| Dickinson, ND                       | Dickinson, ND                       | 550        | 550       |
+| Waterloo, IA                        | Waterloo, IA                        | 549        | 550       |
+| Mason City, IA                      | Mason City, IA                      | 524        | 525       |
+| Fort Dodge, IA                      | Fort Dodge, IA                      | 520        | 521       |
+| King Salmon, AK                     | King Salmon, AK                     | 496        | 496       |
+| Dillingham, AK                      | Dillingham, AK                      | 480        | 480       |
+| West Yellowstone, MT                | West Yellowstone, MT                | 479        | 479       |
+| Deadhorse, AK                       | Deadhorse, AK                       | 450        | 450       |
+| Hobbs, NM                           | Hobbs, NM                           | 418        | 419       |
+| Niagara Falls, NY                   | Niagara Falls, NY                   | 400        | 398       |
+| Worcester, MA                       | Worcester, MA                       | 375        | 377       |
+| Binghamton, NY                      | Binghamton, NY                      | 365        | 365       |
+| Barrow, AK                          | Barrow, AK                          | 362        | 362       |
+| Portsmouth, NH                      | Portsmouth, NH                      | 337        | 337       |
+| North Bend/Coos Bay, OR             | North Bend/Coos Bay, OR             | 334        | 336       |
+| Santa Maria, CA                     | Santa Maria, CA                     | 328        | 329       |
+| Saipan, TT                          | Saipan, TT                          | 269        | 269       |
+| Ponce, PR                           | Ponce, PR                           | 266        | 268       |
+| New Haven, CT                       | New Haven, CT                       | 219        | 219       |
+| Cheyenne, WY                        | Cheyenne, WY                        | 218        | 218       |
+| Williamsport, PA                    | Williamsport, PA                    | 214        | 214       |
+| Hagerstown, MD                      | Hagerstown, MD                      | 185        | 185       |
+| St. Cloud, MN                       | St. Cloud, MN                       | 150        | 150       |
+| Fort Leonard Wood, MO               | Fort Leonard Wood, MO               | 142        | 142       |
+| Cold Bay, AK                        | Cold Bay, AK                        | 130        | 130       |
+| Wilmington, DE                      | Wilmington, DE                      | 118        | 118       |
+| Hyannis, MA                         | Hyannis, MA                         | 118        | 118       |
+| Adak Island, AK                     | Adak Island, AK                     | 104        | 104       |
+| Ogden, UT                           | Ogden, UT                           | 101        | 100       |
+| Owensboro, KY                       | Owensboro, KY                       | 100        | 100       |
+| Gustavus, AK                        | Gustavus, AK                        | 89         | 89        |
+| Branson, MO                         | Branson, MO                         | 71         | 71        |
+| Bishop, CA                          | Bishop, CA                          | 39         | 39        |
+| Lanai, HI                           | Lanai, HI                           | 28         | 28        |
+| Hoolehua, HI                        | Hoolehua, HI                        | 28         | 28        |
+| Pago Pago, TT                       | Pago Pago, TT                       | 6          | 6         |
++-------------------------------------+-------------------------------------+------------+-----------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
