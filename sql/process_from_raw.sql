@@ -1,6 +1,6 @@
 -- Create function to format to HH24:MM time format
 DROP FUNCTION format_time; 
-CREATE OR REPLACE FUNCTION format_time(raw_time FLOAT) RETURNS VARCHAR AS $$
+CREATE OR REPLACE FUNCTION format_time(raw_time FLOAT) RETURNS TIME AS $$
     DECLARE
         time_int INTEGER;
         time_text TEXT;
@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION format_time(raw_time FLOAT) RETURNS VARCHAR AS $$
 	time_text := LPAD(time_int::TEXT, 4, '0');
 
         -- Return the time in HH24:MI format
-        RETURN TO_CHAR(TO_TIMESTAMP(time_text, 'HH24MI'), 'HH24:MI');
+        RETURN TO_CHAR(TO_TIMESTAMP(time_text, 'HH24MI'), 'HH24:MI')::TIME;
     END;
 $$ LANGUAGE plpgsql;
 
