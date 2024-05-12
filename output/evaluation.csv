@@ -1,0 +1,3 @@
+model,Area under ROC,Area under PR
+"RandomForestClassificationModel: uid=RandomForestClassifier_a343737ec309, numTrees=10, numClasses=2, numFeatures=481",0.9999400910615863,0.9999701718559475
+"FMClassificationModel: uid=FMClassifier_3c5286ea03fb, numClasses=2, numFeatures=481, factorSize=8, fitLinear=true, fitIntercept=true",0.999143825636828,0.9989817614080468
